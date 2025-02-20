@@ -30,18 +30,12 @@ const saveSubscription = async (subscription) => {
 }
 
 self.addEventListener("activate", async (e) => {
-    // Ensure the registration is ready before trying to subscribe
-    const subscription = await self.registration.pushManager.getSubscription();
-    if (!subscription) {
-        let key = urlBase64ToUint8Array(publicKey);
-        const newSubscription = await self.registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: key
-        });
-        let res = await saveSubscription(newSubscription);
-    } else {
-        console.log("Already subscribed:", subscription);
-    }
+    let key = urlBase64ToUint8Array(publicKey);
+    const newSubscription = await self.registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: key
+    });
+    await saveSubscription(newSubscription);
 });
 
 self.addEventListener("push", (event) => {

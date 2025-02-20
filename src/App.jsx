@@ -22,7 +22,7 @@ function App() {
 
   // Register service worker
   const registerServiceWorker = async () => {
-    const registration = await navigator.serviceWorker.register('/sw.js');
+    const registration = await navigator.serviceWorker.register('/service-worker.js');
     return registration;
   };
 
@@ -38,36 +38,16 @@ function App() {
     }
   };
 
-  // Subscribe to push notifications
-  // const subscribeToPushNotifications = async (registration) => {
-  //   const publicKey = "BPJjDqyAY-3vbBTcOoH4RMX0ztKgTvaQmZFd84AGhi9VDZ8M2Qsj7dzn4gADFvFiy9ZqYy0Rap6zodfNx3HUcgg";
-  //   const pushSubscription = await registration.pushManager.subscribe({
-  //     userVisibleOnly: true,
-  //     applicationServerKey: publicKey  // Use your VAPID public key
-  //   });
-  //   console.log('Push subscription:', pushSubscription);
-  //   // Optionally, you can send this subscription to your backend to save it
-  //   // For example, using axios:
-  //   // await axios.post('/save-subscription', pushSubscription);
-  // };
-
   useEffect(() => {
-    const initialize = async () => {
-      checkPermissions();
-      await requestNotificationPermission();
-    };
-
-    initialize(); // Call the async function inside useEffect
+    checkPermissions();
   }, []);
-
-
 
   const handleSubscribe = async () => {
     try {
-      // await requestNotificationPermission();
+      await requestNotificationPermission();
 
-      // const registration = await registerServiceWorker();  // Register service worker
-      // console.log('Service Worker registered with scope:', registration.scope);
+      const registration = await registerServiceWorker();  // Register service worker
+      console.log('Service Worker registered with scope:', registration.scope);
 
       // Wait for the service worker to be ready and then subscribe to push notifications
       // const activeRegistration = await navigator.serviceWorker.ready;
@@ -80,7 +60,7 @@ function App() {
   return (
     <>
       <div>
-        <p>Updated Code 4 (Final - Final)</p>
+        <p>Updated Code 5 (Final - Final - Final)</p>
         <p>{isSubscribed ? "You are subscribed to notifications" : "You are not subscribed to notifications"}</p>
         <button onClick={handleSubscribe}>{isSubscribed ? "Unsubscribe" : "Subscribe"}</button>
       </div>
