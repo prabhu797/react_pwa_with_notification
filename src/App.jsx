@@ -44,14 +44,26 @@ function App() {
 
   const handleSubscribe = async () => {
     try {
-      await requestNotificationPermission();
+      if (isSubscribed) {
+        // Unsubscribe logic
+        const registration = await navigator.serviceWorker.getRegistration();
+        if (registration) {
+          await registration.unregister();  // Unregister the service worker
+          console.log('Service Worker unregistered');
+        }
+        setIsSubscribed(false);  // Update subscription state
+      } else {
+        // Subscribe logic
+        await requestNotificationPermission();
 
-      const registration = await registerServiceWorker();  // Register service worker
-      console.log('Service Worker registered with scope:', registration.scope);
+        const registration = await registerServiceWorker();  // Register service worker
+        console.log('Service Worker registered with scope:', registration.scope);
 
-      // Wait for the service worker to be ready and then subscribe to push notifications
-      // const activeRegistration = await navigator.serviceWorker.ready;
-      // await subscribeToPushNotifications(activeRegistration);
+        // Wait for the service worker to be ready and then subscribe to push notifications
+        // const activeRegistration = await navigator.serviceWorker.ready;
+        // await subscribeToPushNotifications(activeRegistration);
+        setIsSubscribed(true);  // Update subscription state
+      }
     } catch (err) {
       console.log("Error", err);
     }
