@@ -48,8 +48,8 @@ function App() {
         // Unsubscribe logic
         const registration = await navigator.serviceWorker.getRegistration();
         if (registration) {
-          await registration.unregister();  // Unregister the service worker
-          console.log('Service Worker unregistered');
+          let response = await registration.unregister();  // Unregister the service worker
+          console.log('Service Worker unregistered', response);
         }
         setIsSubscribed(false);  // Update subscription state
       } else {
