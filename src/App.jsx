@@ -50,6 +50,13 @@ function App() {
         if (registration) {
           const subscription = await registration.pushManager.getSubscription();
           console.log("Subscription", subscription);
+          // Send request to remove subscription from the backend
+          const backenURL = "https://pushnotify.novelhouston.com";
+          await fetch(`${backenURL}/remove-subscription`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ endpoint: subscription.endpoint }),
+          });
           
           console.log('Service Worker unregistered', registration);
           let response = await registration.unregister();  // Unregister the service worker
